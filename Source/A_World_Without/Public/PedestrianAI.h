@@ -46,6 +46,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI Logic")
 	void Flee(FVector ThreatLocation);
 
+	UFUNCTION(BlueprintCallable, Category = "AI Logic")
+	void HaltMovement();
+
+	UFUNCTION(BlueprintCallable, Category = "AI Logic")
+	void ResumeMovement();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
