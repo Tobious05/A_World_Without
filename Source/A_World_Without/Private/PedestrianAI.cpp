@@ -92,3 +92,15 @@ void APedestrianAI::ResumeMovement()
 	MoveToWaypoint();		//recall this function to fix a bug where pedestrians stand still after being stopped by traffic lights
 
 }
+
+void APedestrianAI::ReactToLRAD()
+{
+	WalkSpeed = 600.0f;		//sets the walk speed to sprint
+
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
+
+	MoveToWaypoint();	//makes AI pick a new waypoint to flee to
+}

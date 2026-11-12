@@ -13,3 +13,9 @@ ACriminalAI::ACriminalAI()		//Criminals starting data
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	}
 }
+
+void ACriminalAI::ReactToLRAD()
+{
+	//overrides parent function and does nothing
+	//empty so the criminal does nothing and keeps moving normally
+}

@@ -17,5 +17,7 @@ class A_WORLD_WITHOUT_API ACriminalAI : public APedestrianAI
 public:
 
 	ACriminalAI();
+
+	virtual void ReactToLRAD() override;
 	
 };
