@@ -16,6 +16,7 @@ class A_WORLD_WITHOUT_API UBTTask_FindScatterPoint : public UBTTask_BlueprintBas
 	
 public:
 
+	//function that automatically runs when the behavior tree reaches this node and reports back if it succeeded or failed
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 };
