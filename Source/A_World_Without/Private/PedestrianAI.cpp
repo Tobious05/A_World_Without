@@ -6,6 +6,8 @@
 #include "Waypoint.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 // Sets default values
 APedestrianAI::APedestrianAI()
@@ -95,12 +97,17 @@ void APedestrianAI::ResumeMovement()
 
 void APedestrianAI::ReactToLRAD()
 {
-	WalkSpeed = 600.0f;		//sets the walk speed to sprint
+	//Sets walk speed to sprint
+	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
-	if (GetCharacterMovement())
+	//tells the blackboard that AI is now fleeing
+	AAIController* AIController = Cast<AAIController>(GetController());		//checks to find the AIController and if it has an attatched blackboard
+	if (AIController && AIController->GetBlackboardComponent())
 	{
-		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	}
+		//Updates the IsFleeing boolean in blackboard to true
+		AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsFleeing"), true);
 
-	MoveToWaypoint();	//makes AI pick a new waypoint to flee to
+		//Clears the current patrol target so the behvaiour tree stops the current MoveTo if it needs to switch between fleeing and patrolling mid way through
+		AIController->GetBlackboardComponent()->ClearValue(FName("TargetWaypoint"));
+	}
 }
