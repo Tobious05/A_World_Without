@@ -8,24 +8,33 @@
 
 EBTNodeResult::Type UBTTask_FindScatterPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	if (AIController)
+	AAIController* AICon = OwnerComp.GetAIOwner();
+	if (AICon && AICon->GetPawn())
 	{
-		APawn* AIPawn = AIController->GetPawn();
-		if (AIPawn)
+		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		if (NavSys)
 		{
-			//Get the navigation system
-			UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-			if (NavSys)
+			//get AIs starting position
+			FVector Origin = AICon->GetPawn()->GetActorLocation();
+
+			//get a random 3D direction, make it 2D (so cant fly) and normalise to length of 1
+			FVector RandomDir = FMath::VRand();
+			RandomDir.Z = 0.0f;
+			RandomDir.Normalize();
+
+			//picks random distance between min of 3000 and max of 7000
+			float RandomDistance = FMath::RandRange(1500.0f, 3000.0f);
+
+			//multiply 1 unit direction by the random distance and add it to the AIs current location
+			FVector IdealPoint = Origin + (RandomDir * RandomDistance);
+
+			//Gets the NavMesh to snap the point to the nearest valid walking location
+			FNavLocation FinalLocation;
+			if (NavSys->ProjectPointToNavigation(IdealPoint, FinalLocation, FVector(500.0f, 500.0f, 500.0f)))
 			{
-				FNavLocation RandomLocation;
-				//Draw a 800 unit circle radius around the AI and find a random reachable point
-				if (NavSys->GetRandomReachablePointInRadius(AIPawn->GetActorLocation(), 800.0f, RandomLocation))
-				{
-					//Save the coordinate to a blackboard key named "ScatterVector"
-					OwnerComp.GetBlackboardComponent()->SetValueAsVector(FName("ScatterVector"), RandomLocation.Location);
-					return EBTNodeResult::Succeeded;
-				}
+				//save this distance point to the blacboard
+				OwnerComp.GetBlackboardComponent()->SetValueAsVector(FName("ScatterVector"), FinalLocation.Location);
+				return EBTNodeResult::Succeeded;
 			}
 		}
 	}
