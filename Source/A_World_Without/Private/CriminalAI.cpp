@@ -19,3 +19,8 @@ void ACriminalAI::ReactToLRAD()
 	//overrides parent function and does nothing
 	//empty so the criminal does nothing and keeps moving normally
 }
+
+void ACriminalAI::HaltMovement()
+{
+	//empty so the criminal does nothing when the halt movement function is called
+}

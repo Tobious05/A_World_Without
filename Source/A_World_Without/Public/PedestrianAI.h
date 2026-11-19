@@ -47,7 +47,7 @@ public:
 	void Flee(FVector ThreatLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "AI Logic")
-	void HaltMovement();
+	virtual void HaltMovement();		//virtual so the criminal AI child class can override this and not react to devices
 
 	UFUNCTION(BlueprintCallable, Category = "AI Logic")
 	void ResumeMovement();

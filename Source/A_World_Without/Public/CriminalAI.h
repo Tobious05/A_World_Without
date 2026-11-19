@@ -19,5 +19,7 @@ public:
 	ACriminalAI();
 
 	virtual void ReactToLRAD() override;
+
+	virtual void HaltMovement() override;
 	
 };
