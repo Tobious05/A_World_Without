@@ -22,7 +22,7 @@ EBTNodeResult::Type UBTTask_FindScatterPoint::ExecuteTask(UBehaviorTreeComponent
 			RandomDir.Z = 0.0f;
 			RandomDir.Normalize();
 
-			//picks random distance between min of 3000 and max of 7000
+			//picks random distance between min of 1500 and max of 3000
 			float RandomDistance = FMath::RandRange(1500.0f, 3000.0f);
 
 			//multiply 1 unit direction by the random distance and add it to the AIs current location
